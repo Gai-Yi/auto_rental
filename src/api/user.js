@@ -1,24 +1,21 @@
-import request from '@/utils/request'
+import requestHttp from '@/utils/request'
 
+// 登录
 export function login(data) {
-  return request({
-    url: '/vue-element-admin/user/login',
-    method: 'post',
-    data
-  })
+  return requestHttp.login('/rental/user/login', data)
 }
 
-export function getInfo(token) {
-  return request({
-    url: '/vue-element-admin/user/info',
-    method: 'get',
-    params: { token }
-  })
+// 获取用户信息
+export function getInfo() {
+  return requestHttp.get('/rental/auth/info')
 }
 
-export function logout() {
-  return request({
-    url: '/vue-element-admin/user/logout',
-    method: 'post'
-  })
+// 登出
+export async function logout() {
+  return await requestHttp.get("/rental/auth/logout")
+}
+
+// 获取菜单栏列表
+export async function getMenuList() {
+  return await requestHttp.get("/rental/auth/menuList")
 }
