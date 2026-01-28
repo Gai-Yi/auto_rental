@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // 无状态，不保存session状态，因为是前后端分离的系统，使用token，不需要session
                 .and()                          // 返回 HttpSecurity 对象
                 .authorizeHttpRequests()        // 3. 开始授权配置
-                .requestMatchers("/rental/user/login").permitAll() // 指定特定的地址允许所有人访问（不需要认证）
+                .requestMatchers("/rental/user/login", "/image/show/**").permitAll() // 指定特定的地址允许所有人访问（不需要认证）
                 .anyRequest().authenticated()  // 其他所有请求都需要认证
                 .and()                          // 返回 HttpSecurity 对象
                 .exceptionHandling()            // 4. 开始异常处理配置

@@ -44,3 +44,4 @@ encoder:
 
 request:
   loginUrl: /rental/user/login
+  imageUrl: /image/show/logo.png

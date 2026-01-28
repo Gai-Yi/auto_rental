@@ -30,6 +30,9 @@ public class VerifyTokenFilter extends OncePerRequestFilter {
     @Value("${request.loginUrl}")
     private String loginUrl;
 
+    @Value("${request.imageUrl}")
+    private String imageUrl;
+
     @Resource
     private RedisUtil redisUtil;
 
@@ -46,7 +49,7 @@ public class VerifyTokenFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         // 当请求的地址不是登录的地址的时候进行认证，如果是的话则进行后面的过滤链
-        if (!StrUtil.equals(requestURI, loginUrl)) {
+        if (!StrUtil.equals(requestURI, loginUrl) && !StrUtil.equals(requestURI, imageUrl)) {
             try {
                 // 校验token
                 verifyToken(request, response);

@@ -10,7 +10,7 @@ public class CORSConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         // 配置跨域请求的映射
-        registry.addMapping("*/**")
+        registry.addMapping("/**")
                 // 允许所有来源的跨域请求
                 .allowedOriginPatterns("*")
                 // 允许所有请求头

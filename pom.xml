@@ -131,5 +131,11 @@
             <artifactId>easyexcel</artifactId>
             <version>${easyexcel.version}</version>
         </dependency>
+        <!--pinyin4j-->
+        <dependency>
+            <groupId>io.github.tokenjan</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.6.1</version>
+        </dependency>
     </dependencies>
 </project>

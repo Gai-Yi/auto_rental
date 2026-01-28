@@ -17,17 +17,17 @@ import com.coder.rental.util.Result;
 import com.coder.rental.vo.TokenVo;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("rental/auth")
@@ -90,7 +90,11 @@ public class AuthController {
         User user = (User) authentication.getPrincipal();
 
         // 封装用户视图信息
-        Object[] roles = userService.selectRoleName(user.getId()).toArray();
+        Object[] roles = user.getPermissionList()
+                .stream()
+                .filter(Objects::nonNull)
+                .map(Permission::getPermissionCode)
+                .toArray();
         UserInfoVo userInfo = new UserInfoVo(user.getId(), user.getUsername(),
                 user.getNickname(), user.getAvatar(), roles);
 
@@ -117,5 +121,26 @@ public class AuthController {
         // 将权限列表转为视图实体的结构
         List<RouteVo> routeVoList = RouteTreeUtil.buildRouteTree(permissionList, 0);
         return Result.success(routeVoList).setMessage("获取菜单数据成功");
+    }
+
+    @GetMapping("logout")
+    public Result logout(HttpServletRequest request, HttpServletResponse response) {
+        // 从令牌中获取认证信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new CustomerAuthenticationException("当前用户未登录");
+        }
+        // 获取到用户信息
+        User user = (User) authentication.getPrincipal();
+
+        // 删除redis数据
+        String tokenKey = "token:" + user.getId();
+        redisUtil.del(tokenKey);
+
+        // 清除令牌信息
+        SecurityContextLogoutHandler handler = new SecurityContextLogoutHandler();
+        handler.logout(request, response, authentication);
+
+        return Result.success().setMessage("退出成功");
     }
 }
