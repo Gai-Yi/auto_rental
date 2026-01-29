@@ -53,4 +53,9 @@ public class AutoMakerController {
         autoMaker.setOrderLetter(PinYinUtil.getFirstLetter(autoMaker.getName()));
         return autoMakerService.updateById(autoMaker) ? Result.success() : Result.fail();
     }
+
+    @GetMapping
+    public Result selectAll() {
+        return Result.success(autoMakerService.list());
+    }
 }
