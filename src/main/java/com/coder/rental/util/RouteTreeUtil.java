@@ -2,6 +2,7 @@ package com.coder.rental.util;
 
 import com.coder.rental.entity.Permission;
 import com.coder.rental.vo.RouteVo;
+import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class RouteTreeUtil {
                     }
                     // 设置实体元数据
                     routeVo.setMeta(routeVo.new Meta(
-                            permission.getPermissionLable(),
+                            permission.getPermissionLabel(),
                             permission.getIcon(),
                             permission.getPermissionCode().split(",")));
 
@@ -45,5 +46,21 @@ public class RouteTreeUtil {
                     routeVoList.add(routeVo);
                 });
         return routeVoList;
+    }
+
+    public static List<Permission> buildPermissionTree(List<Permission> permissionList, int pid) {
+        List<Permission> permissionTree = new ArrayList<>();
+        Optional.ofNullable(permissionList)
+                .orElse(new ArrayList<>())
+                .stream()
+                .filter(permission -> permission != null && permission.getPid() == pid)
+                .forEach(permission -> {
+                    // 拷贝一份
+                    Permission menu = new Permission();
+                    BeanUtils.copyProperties(permission, menu);
+                    menu.setChildren(buildPermissionTree(permissionList, menu.getId()));
+                    permissionTree.add(menu);
+                });
+        return permissionTree;
     }
 }

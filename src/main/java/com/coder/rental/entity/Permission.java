@@ -1,8 +1,7 @@
 package com.coder.rental.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,10 +31,11 @@ public class Permission implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("权限id")
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty("权限名称")
-    private String permissionLable;
+    private String permissionLabel;
 
     @ApiModelProperty("父权限id")
     private Integer pid;
