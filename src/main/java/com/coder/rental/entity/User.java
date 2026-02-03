@@ -79,7 +79,7 @@ public class User implements Serializable, UserDetails {
     private String avatar;
 
     @ApiModelProperty("是否是管理员")
-    private Boolean isAdmin;
+    private Integer isAdmin;
 
     @ApiModelProperty("创建时间")
     @TableField(fill = FieldFill.INSERT)

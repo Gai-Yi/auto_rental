@@ -2,6 +2,7 @@ package com.coder.rental.service;
 
 import com.coder.rental.entity.Permission;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.coder.rental.vo.RolePermissionVo;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface IPermissionService extends IService<Permission> {
     List<Permission> selectTree();
 
     List<Permission> selectList();
+
+    RolePermissionVo selectPermissionTree(Integer userId, Integer roleId);
 }

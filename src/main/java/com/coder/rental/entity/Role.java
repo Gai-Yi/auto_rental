@@ -1,8 +1,7 @@
 package com.coder.rental.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
@@ -29,6 +28,7 @@ public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("角色id")
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty("角色编码")

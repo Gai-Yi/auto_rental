@@ -6,10 +6,20 @@
             parameterType="com.coder.rental.entity.User">
         SELECT distinct p.*
         FROM sys_user u
-                 LEFT JOIN sys_user_role ur ON u.id=ur.user_id
-                 LEFT JOIN sys_role_permission rp ON ur.role_id=rp.role_id
-                 LEFT JOIN sys_permission p ON rp.permission_id=p.id
-        WHERE u.id=#{id} and p.deleted=0
-        ORDER BY p.id,p.order_num
+                 LEFT JOIN sys_user_role ur ON u.id = ur.user_id
+                 LEFT JOIN sys_role_permission rp ON ur.role_id = rp.role_id
+                 LEFT JOIN sys_permission p ON rp.permission_id = p.id
+        WHERE u.id = #{id}
+          and p.deleted = 0
+        ORDER BY p.id, p.order_num
+    </select>
+
+    <select id="selectPermissionListByRoleId"
+            resultType="com.coder.rental.entity.Permission"
+            parameterType="Integer">
+        select p.*
+        from sys_permission p
+                 left join sys_role_permission rp on p.id = rp.permission_id
+        where rp.role_id = #{roleId}
     </select>
 </mapper>
